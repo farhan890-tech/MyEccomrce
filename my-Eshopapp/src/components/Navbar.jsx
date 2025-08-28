@@ -1,0 +1,460 @@
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  ShoppingCartIcon,
+  MagnifyingGlassIcon,
+  UserCircleIcon,
+} from "@heroicons/react/24/outline";
+import { useCart } from "../context/CartContext";
+
+export default function HomePage() {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  // Note: useCart is commented out as it's not used in this view, but kept for context.
+  const { items } = useCart();
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (search.trim()) {
+      navigate(`/search?q=${encodeURIComponent(search)}`);
+      setSearch("");
+      setOpen(false);
+    }
+  };
+
+  return (
+    <>
+      {/* This is a common pattern for including styles directly within a React component.
+        It keeps the component self-contained and easy to manage in a single file.
+      */}
+      <style>
+        {`
+          /* Universal Styles */
+          .antialiased {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+          }
+          body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+          }
+          .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+          }
+
+          /* Navigation Bar */
+          .navbar {
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+          }
+          .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1280px;
+            margin: 0 auto;
+          }
+          .navbar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4f46e5;
+            text-decoration: none;
+          }
+          .navbar-menu {
+            display: none;
+            align-items: center;
+            gap: 2rem;
+          }
+          @media (min-width: 768px) {
+            .navbar-menu {
+              display: flex;
+            }
+          }
+          .navbar-link {
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+          }
+          .navbar-link:hover {
+            color: #4f46e5;
+          }
+          .navbar-link .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+          }
+          .cart-count {
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            padding: 0.125rem 0.5rem;
+          }
+          .search-bar {
+            display: none;
+            align-items: center;
+            background-color: #f3f4f6;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            flex-grow: 1;
+            max-width: 400px;
+          }
+          @media (min-width: 768px) {
+            .search-bar {
+              display: flex;
+            }
+          }
+          .search-bar input {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            flex-grow: 1;
+          }
+          .search-bar button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 0.5rem;
+          }
+          .menu-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+          }
+          @media (min-width: 768px) {
+            .menu-btn {
+              display: none;
+            }
+          }
+          .mobile-menu {
+            display: none;
+            flex-direction: column;
+            background-color: white;
+            padding: 1rem;
+            border-top: 1px solid #e5e7eb;
+          }
+          .mobile-menu.open {
+            display: flex;
+          }
+          .mobile-link {
+            padding: 0.75rem 1rem;
+            color: #4b5563;
+            text-decoration: none;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+          }
+          .mobile-link:last-child {
+            border-bottom: none;
+          }
+          .mobile-search {
+            display: flex;
+            align-items: center;
+            background-color: #f3f4f6;
+            border-radius: 9999px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 1rem;
+          }
+          .mobile-search input {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            flex-grow: 1;
+          }
+          .mobile-search button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 0.5rem;
+          }
+
+          /* Hero Section */
+          .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, #4f46e5, #9333ea);
+            color: white;
+            padding: 6rem 1rem;
+            text-align: center;
+            overflow: hidden;
+            border-radius: 0 0 2rem 2rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          }
+          .hero-section .abstract-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+          }
+          .hero-section .shape-1 {
+            width: 150px;
+            height: 150px;
+            top: -50px;
+            right: -50px;
+          }
+          .hero-section .shape-2 {
+            width: 250px;
+            height: 250px;
+            bottom: -100px;
+            left: -100px;
+          }
+          .hero-section h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -0.025em;
+            margin-bottom: 1rem;
+          }
+          .hero-section p {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+          }
+          .hero-section .shop-now-btn {
+            display: inline-block;
+            background-color: white;
+            color: #4f46e5;
+            padding: 1rem 2.5rem;
+            font-weight: 700;
+            border-radius: 9999px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+          .hero-section .shop-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          }
+
+          /* Sections */
+          .section-padding {
+            padding: 4rem 1rem;
+          }
+          .section-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            text-align: center;
+            margin-bottom: 3rem;
+          }
+
+          /* Categories Section */
+          .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+          }
+          @media (min-width: 768px) {
+            .categories-grid {
+              grid-template-columns: repeat(4, 1fr);
+            }
+          }
+          .category-card {
+            background-color: #f9fafb;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+          .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+          }
+          .category-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+          }
+          .category-card .icon-placeholder {
+            width: 3rem;
+            height: 3rem;
+            background-color: #e5e7eb;
+            border-radius: 50%;
+            margin: 0 auto 0.5rem;
+          }
+          .category-card:nth-child(1) { background-color: #e0e7ff; color: #3730a3; }
+          .category-card:nth-child(2) { background-color: #fae8ff; color: #8b5cf6; }
+          .category-card:nth-child(3) { background-color: #d1fae5; color: #10b981; }
+          .category-card:nth-child(4) { background-color: #fef2f2; color: #ef4444; }
+
+          /* Featured Products Section */
+          .products-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+          }
+          @media (min-width: 640px) {
+            .products-grid {
+              grid-template-columns: repeat(2, 1fr);
+            }
+          }
+          @media (min-width: 1024px) {
+            .products-grid {
+              grid-template-columns: repeat(3, 1fr);
+            }
+          }
+          .product-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+          .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          }
+          .product-card .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 1rem;
+            margin-bottom: 1rem;
+          }
+          .product-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+          }
+          .product-card .price {
+            font-size: 1.125rem;
+            color: #4b5563;
+            margin-top: 0.25rem;
+          }
+          .product-card .view-details-btn {
+            display: block;
+            margin-top: 1.5rem;
+            background-color: #4f46e5;
+            color: white;
+            text-align: center;
+            padding: 0.75rem;
+            border-radius: 9999px;
+            transition: background-color 0.3s ease;
+          }
+          .product-card .view-details-btn:hover {
+            background-color: #3730a3;
+          }
+
+          /* Footer */
+          .footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            padding: 3rem 1rem;
+            text-align: center;
+          }
+          .footer p {
+            margin-bottom: 1rem;
+          }
+          .footer .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+          }
+          .footer .social-icons a {
+            color: #9ca3af;
+            transition: color 0.3s ease;
+          }
+          .footer .social-icons a:hover {
+            color: white;
+          }
+        `}
+      </style>
+
+      <div className="antialiased">
+        {/* Navigation Bar */}
+        <header className="navbar">
+          <div className="navbar-container">
+            {/* Logo */}
+            <Link to="/" className="navbar-logo">
+              MunsuriCollections
+            </Link>
+
+            {/* Desktop Menu */}
+            <nav className="navbar-menu">
+              <Link to="/" className="navbar-link">Home</Link>
+              <Link to="/products" className="navbar-link">Products</Link>
+              <Link to="/cart" className="navbar-link cart-link">
+                <ShoppingCartIcon className="icon" />
+                Cart
+                {items.length > 0 && (
+                  <span className="cart-count">{items.length}</span>
+                )}
+              </Link>
+              <Link to="/signin" className="navbar-link user-link">
+                <UserCircleIcon className="icon" />
+                Account
+              </Link>
+            </nav>
+
+            {/* Search Bar (desktop) */}
+            <form onSubmit={handleSearch} className="search-bar">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <button type="submit">
+                <MagnifyingGlassIcon className="icon" />
+              </button>
+            </form>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="menu-btn"
+              onClick={() => setOpen((prev) => !prev)}
+              aria-label="Toggle menu"
+            >
+              {open ? <XMarkIcon className="icon" /> : <Bars3Icon className="icon" />}
+            </button>
+          </div>
+
+          {/* Mobile Dropdown */}
+          <div className={`mobile-menu ${open ? "open" : ""}`}>
+            <form onSubmit={handleSearch} className="mobile-search">
+              <input
+                type="text"
+                placeholder="Search products..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <button type="submit">
+                <MagnifyingGlassIcon className="icon" />
+              </button>
+            </form>
+            <Link to="/" onClick={() => setOpen(false)} className="mobile-link">
+              Home
+            </Link>
+            <Link to="/products" onClick={() => setOpen(false)} className="mobile-link">
+              Products
+            </Link>
+            <Link to="/cart" onClick={() => setOpen(false)} className="mobile-link">
+              <ShoppingCartIcon className="icon" />
+              Cart {items.length > 0 && <span className="cart-count">{items.length}</span>}
+            </Link>
+            <Link to="/signin" onClick={() => setOpen(false)} className="mobile-link">
+              <UserCircleIcon className="icon" />
+              Account
+            </Link>
+          </div>
+        </header>     
+      </div>
+    </>
+  );
+}
