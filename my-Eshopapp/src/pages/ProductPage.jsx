@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 
+
 /**
  * ProductPage with:
  * - add product form

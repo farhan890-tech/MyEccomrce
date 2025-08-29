@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AdminDashboard from './pages/AdminDashboard';
 import Layout from './components/Layout.jsx';
 import HomePage from './pages/HomePage';
-import ProductPage from './pages/ProductPage.jsx';
+import Products from './pages/Products.jsx';
 import CartPage from './pages/CartPage.jsx';
 import CheckoutPage from './pages/CheckoutPage.jsx';
 import { CartProvider } from './context/CartContext.jsx';
@@ -19,7 +19,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/product/:id" element={<ProductPage />} />
+            <Route path="/Products" element={<Products />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
           </Routes>

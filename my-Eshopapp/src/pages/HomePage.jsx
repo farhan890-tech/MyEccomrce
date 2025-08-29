@@ -1,4 +1,4 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
 import Slider from "react-slick"; // 👈 new import
 import "slick-carousel/slick/slick.css"; 
@@ -83,6 +83,85 @@ export default function HomePage() {
           </Slider>
         </div>
       </section>
+      <section className="section-padding" style= {{ backgroundColor: '#f9fafb' }}>
+      <div className="container">
+        <h2 className="section-heading">Featured Products</h2>
+        <div className="products-grid">
+          {[1, 2, 3].map((id) => (
+            <div key={id} className="product-card">
+              <img
+                src={`https://placehold.co/600x400/3730a3/ffffff?text=Product+${id}`}
+                alt={`Product ${id}`}
+                className="product-image"
+              />
+              <h3>Product {id}</h3>
+              <p className="price">$ {(id * 50).toFixed(2)}</p>
+              <Link
+                to={`/product/${id}`}
+                className="view-details-btn"
+              >
+                View Details
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+<section className="section-padding" style= {{ backgroundColor: '#f9fafb' }}>
+      <div className="container">
+        <div className="products-grid">
+          {[1, 2, 3].map((id) => (
+            <div key={id} className="product-card">
+              <img
+                src={`https://placehold.co/600x400/3730a3/ffffff?text=Product+${id}`}
+                alt={`Product ${id}`}
+                className="product-image"
+              />
+              <h3>Product {id}</h3>
+              <p className="price">$ {(id * 50).toFixed(2)}</p>
+              <Link
+                to={`/product/${id}`}
+                className="view-details-btn"
+              >
+                View Details
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+<section className="section-padding" style= {{ backgroundColor: '#f9fafb' }}>
+      <div className="container">
+        <div className="products-grid">
+          {[1, 2, 3].map((id) => (
+            <div key={id} className="product-card">
+              <img
+                src={`https://placehold.co/600x400/3730a3/ffffff?text=Product+${id}`}
+                alt={`Product ${id}`}
+                className="product-image"
+              />
+              <h3>Product {id}</h3>
+              <p className="price">$ {(id * 50).toFixed(2)}</p>
+              <Link
+                to={`/product/${id}`}
+                className="view-details-btn"
+              >
+                View Details
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+      
     </div>
+
   );
+
 }
+
+
+

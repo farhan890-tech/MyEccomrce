@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Bars3Icon,
@@ -7,6 +7,7 @@ import {
   MagnifyingGlassIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
+
 import { useCart } from "../context/CartContext";
 
 export default function HomePage() {
